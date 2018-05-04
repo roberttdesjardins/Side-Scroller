@@ -15,6 +15,8 @@
 		55702D59209A8693007E38D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55702D57209A8693007E38D1 /* LaunchScreen.storyboard */; };
 		55702D64209A8693007E38D1 /* Side_ScrollerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55702D63209A8693007E38D1 /* Side_ScrollerTests.swift */; };
 		55702D6F209A8694007E38D1 /* Side_ScrollerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55702D6E209A8694007E38D1 /* Side_ScrollerUITests.swift */; };
+		55702D7D209A892C007E38D1 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55702D7C209A892C007E38D1 /* Player.swift */; };
+		55702D7F209A8984007E38D1 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55702D7E209A8984007E38D1 /* PhysicsCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		55702D6A209A8694007E38D1 /* Side ScrollerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Side ScrollerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55702D6E209A8694007E38D1 /* Side_ScrollerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Side_ScrollerUITests.swift; sourceTree = "<group>"; };
 		55702D70209A8694007E38D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55702D7C209A892C007E38D1 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		55702D7E209A8984007E38D1 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 				55702D55209A8693007E38D1 /* Assets.xcassets */,
 				55702D57209A8693007E38D1 /* LaunchScreen.storyboard */,
 				55702D5A209A8693007E38D1 /* Info.plist */,
+				55702D7C209A892C007E38D1 /* Player.swift */,
+				55702D7E209A8984007E38D1 /* PhysicsCategory.swift */,
 			);
 			path = "Side Scroller";
 			sourceTree = "<group>";
@@ -259,7 +265,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55702D7D209A892C007E38D1 /* Player.swift in Sources */,
 				55702D4F209A8692007E38D1 /* GameScene.swift in Sources */,
+				55702D7F209A8984007E38D1 /* PhysicsCategory.swift in Sources */,
 				55702D51209A8692007E38D1 /* GameViewController.swift in Sources */,
 				55702D49209A8692007E38D1 /* AppDelegate.swift in Sources */,
 			);
@@ -437,6 +445,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H2XMQZ2827;
 				INFOPLIST_FILE = "Side Scroller/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,6 +464,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H2XMQZ2827;
 				INFOPLIST_FILE = "Side Scroller/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
