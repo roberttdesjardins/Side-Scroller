@@ -12,10 +12,12 @@ import GameplayKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     let worldNode = SKNode()
     
-    var player = SKSpriteNode(color: UIColor.white, size: CGSize(width: 20, height: 20))
-    
   
-    var touching = false
+    private var touching = false
+    
+    private var lastUpdateTime : TimeInterval = 0
+    private var timeUntilNextAttack : CGFloat = 0
+    private var counter: Int = 0
     
     override func sceneDidLoad() {
         addChild(worldNode)
@@ -41,12 +43,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         worldNode.addChild(player)
     }
     
+    func randomObstacle(obsticle: Int) {
+        switch obsticle {
+        case 1:
+            obstacle1()
+        default:
+            print("Default Obstacle - shouldn't occur")
+        }
+    }
+    
+    // TODO
+    func obstacle1() {
+        timeUntilNextAttack = 5
+        print("Obstacle1 called")
+    }
     
     func touchDown(atPoint pos : CGPoint) {
         touching = true
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
     }
     
     func touchUp(atPoint pos : CGPoint) {
@@ -57,9 +70,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             touchDown(atPoint: touch.location(in: view))
         }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -77,9 +87,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         if touching {
-            print("Player is currently touching")
-        } else {
-            print("NO TOUCHING")
+            if let player = worldNode.childNode(withName: "Player") as? SKSpriteNode {
+                player.physicsBody?.applyForce(CGVector(dx: 0, dy: 200))
+            }
+        }
+        
+        // set lastUpdateTime to currentTime if it has not already been set
+        if (self.lastUpdateTime == 0) {
+            self.lastUpdateTime = currentTime
+        }
+        // Calculate time since last update
+        let dt = currentTime - self.lastUpdateTime
+        
+        // If enough time has passed, call a random obstacle
+        if CGFloat(dt) >= timeUntilNextAttack {
+            self.lastUpdateTime = currentTime
+            randomObstacle(obsticle: Int(arc4random_uniform(1) + 1))
         }
     }
 }
