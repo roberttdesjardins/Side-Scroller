@@ -37,7 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setUpPlayer() {
-        let player:Player = Player(color: UIColor.white, size: CGSize(width: 20, height: 20))
+        let player:Player = Player(color: UIColor.white, size: CGSize(width: GameData.shared.playerWidth, height: GameData.shared.playerHeight))
         player.initPlayer()
         player.position = CGPoint(x: size.width * (1/6), y: size.height * (1/2))
         worldNode.addChild(player)
@@ -52,10 +52,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    // TODO
     func obstacle1() {
-        timeUntilNextAttack = 5
-        print("Obstacle1 called")
+        timeUntilNextAttack = 1
+        
+        let topWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
+        topWall.initWall()
+        topWall.position = CGPoint(x: size.width + topWall.size.width/2, y: random(min: topWall.size.height / 2 + GameData.shared.playerHeight * 3, max: size.height + topWall.size.height/2))
+        worldNode.addChild(topWall)
+        
+        let bottomWall = Wall(color: UIColor.red, size: CGSize(width: 1, height: 1))
+        bottomWall.initWall()
+        bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * 3)
+        worldNode.addChild(bottomWall)
+        
+        print("bottomWall height = \(bottomWall.size.height)")
+        
+        topWall.moveSprite(location: topWall.position - CGPoint(x: size.width + topWall.size.width, y: 0), duration: 2)
+        
+        bottomWall.moveSprite(location: bottomWall.position - CGPoint(x: size.width + bottomWall.size.width, y: 0), duration: 2)
     }
     
     func touchDown(atPoint pos : CGPoint) {
@@ -87,7 +101,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         if touching {
-            if let player = worldNode.childNode(withName: "Player") as? SKSpriteNode {
+            if let player = worldNode.childNode(withName: GameData.shared.kPlayerName) as? SKSpriteNode {
                 player.physicsBody?.applyForce(CGVector(dx: 0, dy: 200))
             }
         }

@@ -11,13 +11,11 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 class Player: SKSpriteNode {
-    var playerWidth:CGFloat = 40
-    var playerHeight:CGFloat = 40
     
     func initPlayer() {
-        self.size = CGSize(width: playerWidth, height: playerHeight)
+        self.size = CGSize(width: GameData.shared.playerWidth, height: GameData.shared.playerHeight)
         self.zPosition = 6
-        self.name = "Player"
+        self.name = GameData.shared.kPlayerName
         
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody!.isDynamic = true
