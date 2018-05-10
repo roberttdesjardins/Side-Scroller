@@ -63,6 +63,22 @@ func resetGameData() {
     GameData.shared.creditsEarned = 0
 }
 
+func formatHighScores(arrayOfScores: [Int]) {
+    GameData.shared.playerHighScore = quicksort(arrayOfScores)
+    GameData.shared.playerHighScore = Array(GameData.shared.playerHighScore.prefix(5))
+}
+
+func quicksort<T: Comparable>(_ a: [T]) -> [T] {
+    guard a.count > 1 else { return a }
+    
+    let pivot = a[a.count/2]
+    let less = a.filter { $0 < pivot }
+    let equal = a.filter { $0 == pivot }
+    let greater = a.filter { $0 > pivot }
+    
+    return quicksort(greater) + equal + quicksort(less)
+}
+
 public extension SKSpriteNode {
     
     public func moveSprite(location: CGPoint, duration: CGFloat) {

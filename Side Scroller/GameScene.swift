@@ -125,12 +125,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         topWall.position = CGPoint(x: size.width + topWall.size.width/2, y: random(min: topWall.size.height / 2 + GameData.shared.playerHeight * 3, max: size.height + topWall.size.height/2))
         worldNode.addChild(topWall)
         
-        let bottomWall = Wall(color: UIColor.red, size: CGSize(width: 1, height: 1))
+        let bottomWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
         bottomWall.initWall()
         bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * 3)
         worldNode.addChild(bottomWall)
-        
-        print("bottomWall height = \(bottomWall.size.height)")
         
         topWall.moveSprite(location: topWall.position - CGPoint(x: size.width + topWall.size.width, y: 0), duration: 2)
         
@@ -193,7 +191,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             highScoreTable.removeFromParent()
             highScoreBackground.removeFromParent()
             setUpHud()
-            randomObstacle(obsticle: Int(arc4random_uniform(10) + 1))
         }
         
         if startGame {

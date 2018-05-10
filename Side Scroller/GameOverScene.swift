@@ -23,11 +23,11 @@ class GameOverScene: SKScene {
         createRestartButton()
         GameData.shared.creditsEarned = GameData.shared.creditsEarned + Int(round(Double(GameData.shared.playerScore/35)))
         createScoreLabel()
-        //GameData.shared.playerHighScore.append(GameData.shared.playerScore)
-        //formatHighScores(arrayOfScores: GameData.shared.playerHighScore)
-        //UserDefaults.standard.setUserHighScores(array: GameData.shared.playerHighScore)
-        //let newCreditBalance = GameData.shared.totalCredits + GameData.shared.creditsEarned
-        //UserDefaults.standard.setUserCredits(credits: newCreditBalance)
+        GameData.shared.playerHighScore.append(GameData.shared.playerScore)
+        formatHighScores(arrayOfScores: GameData.shared.playerHighScore)
+        UserDefaults.standard.setUserHighScores(array: GameData.shared.playerHighScore)
+        let newCreditBalance = GameData.shared.totalCredits + GameData.shared.creditsEarned
+        UserDefaults.standard.setUserCredits(credits: newCreditBalance)
         resetGameData()
     }
     
