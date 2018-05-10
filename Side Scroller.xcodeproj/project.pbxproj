@@ -20,6 +20,7 @@
 		55702D6F209A8694007E38D1 /* Side_ScrollerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55702D6E209A8694007E38D1 /* Side_ScrollerUITests.swift */; };
 		55702D7D209A892C007E38D1 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55702D7C209A892C007E38D1 /* Player.swift */; };
 		55702D7F209A8984007E38D1 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55702D7E209A8984007E38D1 /* PhysicsCategory.swift */; };
+		55F192CE20A4EAB200519B41 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F192CD20A4EAB200519B41 /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		55702D70209A8694007E38D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55702D7C209A892C007E38D1 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		55702D7E209A8984007E38D1 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
+		55F192CD20A4EAB200519B41 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				5531011920A2410B00A835A4 /* Wall.swift */,
 				5531011B20A2413A00A835A4 /* GameData.swift */,
 				5531011D20A2431200A835A4 /* Helpers.swift */,
+				55F192CD20A4EAB200519B41 /* GameOverScene.swift */,
 			);
 			path = "Side Scroller";
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				55702D7F209A8984007E38D1 /* PhysicsCategory.swift in Sources */,
 				5531011C20A2413A00A835A4 /* GameData.swift in Sources */,
 				55702D51209A8692007E38D1 /* GameViewController.swift in Sources */,
+				55F192CE20A4EAB200519B41 /* GameOverScene.swift in Sources */,
 				55702D49209A8692007E38D1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

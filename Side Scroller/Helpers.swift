@@ -39,6 +39,30 @@ func - (left: CGSize, right: CGSize) -> CGSize {
     return CGSize(width: left.width - right.width, height: left.height - right.height)
 }
 
+
+func gameOverSceneLoad(view: UIView) {
+    let scene = GameOverScene(size: view.bounds.size)
+    let skView = view as! SKView
+    skView.ignoresSiblingOrder = true
+    scene.scaleMode = .resizeFill
+    skView.presentScene(scene, transition: SKTransition.doorsOpenHorizontal(withDuration: 1.0))
+}
+
+func gameSceneLoad(view: UIView) {
+    let scene = GameScene(size: view.bounds.size)
+    let skView = view as! SKView
+    skView.ignoresSiblingOrder = true
+    scene.scaleMode = .resizeFill
+    skView.showsFPS = true
+    skView.showsNodeCount = true
+    skView.presentScene(scene, transition: SKTransition.doorsCloseHorizontal(withDuration: 1.0))
+}
+
+func resetGameData() {
+    GameData.shared.playerScore = 0
+    GameData.shared.creditsEarned = 0
+}
+
 public extension SKSpriteNode {
     
     public func moveSprite(location: CGPoint, duration: CGFloat) {
