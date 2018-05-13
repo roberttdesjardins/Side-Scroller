@@ -11,6 +11,10 @@ import SpriteKit
 import GameplayKit
 
 class Wall: SKSpriteNode {
+    
+    var currentVelocity:CGFloat =  1
+
+    
     func initWall() {
         self.name = GameData.shared.kObstacleName
         self.size = CGSize(width: 30, height: GameData.shared.deviceHeight)

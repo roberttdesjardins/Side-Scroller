@@ -88,3 +88,10 @@ public extension SKSpriteNode {
     }
     
 }
+
+public extension CGFloat {
+    /// Randomly returns either 1.0 or -1.0.
+    public static var randomSign: CGFloat {
+        return (arc4random_uniform(2) == 0) ? 1.0 : -1.0
+    }
+}

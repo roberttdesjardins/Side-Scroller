@@ -30,6 +30,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let background1 = SKSpriteNode(imageNamed: "glacial_mountains_lightened")
     let background2 = SKSpriteNode(imageNamed: "glacial_mountains_lightened")
     
+    private var obstacle1Array : [Wall] = []
+    private var obstacle2TopArray : [Wall] = []
+    private var obstacle2BottomArray : [Wall] = []
+    
     override func sceneDidLoad() {
         processGameData()
         addChild(worldNode)
@@ -153,11 +157,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         switch obsticle {
         case 1:
             obstacle1()
+        case 2:
+            obstacle2()
         default:
             print("Default Obstacle - shouldn't occur")
         }
     }
     
+    func updateObstacles() {
+        updateObstacle1()
+        updateObstacle2()
+    }
+    
+    // Two walls spawn with a fixed distance between them and move towards the left side of the screen
     func obstacle1() {
         timeUntilNextAttack = 1
         
@@ -170,10 +182,72 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bottomWall.initWall()
         bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * 3)
         worldNode.addChild(bottomWall)
+        obstacle1Array.append(topWall)
+        obstacle1Array.append(bottomWall)
+    }
+    
+    func updateObstacle1() {
+        for wall in obstacle1Array {
+            wall.position = wall.position - CGPoint(x: findSpeedBasedOnScreenSize(numberOfSeconds: 2), y: 0)
+        }
+    }
+    
+    func findSpeedBasedOnScreenSize(numberOfSeconds: CGFloat) -> CGFloat {
+        return size.width / (numberOfSeconds * 60)
+    }
+    
+    
+    // Walls move up and down, with a hole between both walls
+    func obstacle2() {
+        timeUntilNextAttack = 1
         
-        topWall.moveSprite(location: topWall.position - CGPoint(x: size.width + topWall.size.width, y: 0), duration: 2)
+        let movingUpOrDown = CGFloat.randomSign
         
-        bottomWall.moveSprite(location: bottomWall.position - CGPoint(x: size.width + bottomWall.size.width, y: 0), duration: 2)
+        
+        let topWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
+        topWall.initWall()
+        topWall.position = CGPoint(x: size.width + topWall.size.width/2, y: random(min: topWall.size.height / 2 + GameData.shared.playerHeight * 4, max: size.height + topWall.size.height/2))
+        topWall.currentVelocity = movingUpOrDown
+        worldNode.addChild(topWall)
+        
+        let bottomWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
+        bottomWall.initWall()
+        bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * 4)
+        bottomWall.currentVelocity = movingUpOrDown
+        worldNode.addChild(bottomWall)
+        
+        obstacle2TopArray.append(topWall)
+        obstacle2BottomArray.append(bottomWall)
+        
+    }
+    
+    
+    func updateObstacle2() {
+        for wall in obstacle2TopArray {
+            wall.position = wall.position - CGPoint(x: findSpeedBasedOnScreenSize(numberOfSeconds: 2), y: 0)
+            if wall.currentVelocity > 0 && (wall.position.y >= size.height + wall.size.height/2){
+                // Wall is moving beyond top bounds so change direction
+                wall.currentVelocity = wall.currentVelocity * -1
+            } else if wall.currentVelocity < 0 && (wall.position.y <= wall.size.height / 2 + GameData.shared.playerHeight * 4) {
+                // Wall is moving beyond bottom bounds so change direction
+                wall.currentVelocity = wall.currentVelocity * -1
+            } else {
+                wall.position = wall.position + CGPoint(x: 0, y: wall.currentVelocity)
+            }
+        }
+        
+        for wall in obstacle2BottomArray {
+            wall.position = wall.position - CGPoint(x: findSpeedBasedOnScreenSize(numberOfSeconds: 2), y: 0)
+            if wall.currentVelocity > 0 && (wall.position.y + wall.size.height/2 >= size.height - GameData.shared.playerHeight * 4){
+                // Wall is moving beyond top bounds so change direction
+                wall.currentVelocity = wall.currentVelocity * -1
+            } else if wall.currentVelocity < 0 && (wall.position.y <= -wall.size.height/2) {
+                // Wall is moving beyond bottom bounds so change direction
+                wall.currentVelocity = wall.currentVelocity * -1
+            } else {
+                wall.position = wall.position + CGPoint(x: 0, y: wall.currentVelocity)
+            }
+        }
     }
     
     func touchDown(atPoint pos : CGPoint) {
@@ -240,6 +314,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             GameData.shared.playerScore = GameData.shared.playerScore + 1
             updateHud()
             updateBackground()
+            updateObstacles()
         }
         
         if touching && startGame {
@@ -258,7 +333,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // If enough time has passed, call a random obstacle
         if startGame && CGFloat(dt) >= timeUntilNextAttack {
             self.lastUpdateTime = currentTime
-            randomObstacle(obsticle: Int(arc4random_uniform(1) + 1))
+            randomObstacle(obsticle: Int(arc4random_uniform(2) + 1))
         }
     }
 }
