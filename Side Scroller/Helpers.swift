@@ -39,6 +39,10 @@ func - (left: CGSize, right: CGSize) -> CGSize {
     return CGSize(width: left.width - right.width, height: left.height - right.height)
 }
 
+func findSpeedBasedOnScreenSize(numberOfSeconds: CGFloat) -> CGFloat {
+    return GameData.shared.deviceWidth / (numberOfSeconds * 60)
+}
+
 
 func gameOverSceneLoad(view: UIView) {
     let scene = GameOverScene(size: view.bounds.size)

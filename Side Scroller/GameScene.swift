@@ -34,6 +34,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var obstacle2TopArray : [Wall] = []
     private var obstacle2BottomArray : [Wall] = []
     
+    private var distanceBetweenObstacle1 : CGFloat = 3
+    private var distanceBetweenObstacle2 : CGFloat = 3.5
+    
     override func sceneDidLoad() {
         processGameData()
         addChild(worldNode)
@@ -175,12 +178,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let topWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
         topWall.initWall()
-        topWall.position = CGPoint(x: size.width + topWall.size.width/2, y: random(min: topWall.size.height / 2 + GameData.shared.playerHeight * 3, max: size.height + topWall.size.height/2))
+        topWall.position = CGPoint(x: size.width + topWall.size.width/2, y: random(min: topWall.size.height / 2 + GameData.shared.playerHeight * distanceBetweenObstacle1, max: size.height + topWall.size.height/2))
         worldNode.addChild(topWall)
         
         let bottomWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
         bottomWall.initWall()
-        bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * 3)
+        bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * distanceBetweenObstacle1)
         worldNode.addChild(bottomWall)
         obstacle1Array.append(topWall)
         obstacle1Array.append(bottomWall)
@@ -189,13 +192,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func updateObstacle1() {
         for wall in obstacle1Array {
             wall.position = wall.position - CGPoint(x: findSpeedBasedOnScreenSize(numberOfSeconds: 2), y: 0)
+            if wall.position.x <= -wall.size.width {
+                obstacle1Array.remove(at: obstacle1Array.index(of: wall)!)
+                wall.removeFromParent()
+            }
         }
     }
-    
-    func findSpeedBasedOnScreenSize(numberOfSeconds: CGFloat) -> CGFloat {
-        return size.width / (numberOfSeconds * 60)
-    }
-    
     
     // Walls move up and down, with a hole between both walls
     func obstacle2() {
@@ -206,13 +208,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let topWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
         topWall.initWall()
-        topWall.position = CGPoint(x: size.width + topWall.size.width/2, y: random(min: topWall.size.height / 2 + GameData.shared.playerHeight * 4, max: size.height + topWall.size.height/2))
+        topWall.position = CGPoint(x: size.width + topWall.size.width/2, y: random(min: topWall.size.height / 2 + GameData.shared.playerHeight * distanceBetweenObstacle2, max: size.height + topWall.size.height/2))
         topWall.currentVelocity = movingUpOrDown
         worldNode.addChild(topWall)
         
         let bottomWall = Wall(color: UIColor.white, size: CGSize(width: 1, height: 1))
         bottomWall.initWall()
-        bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * 4)
+        bottomWall.position = topWall.position - CGPoint(x: 0, y: bottomWall.size.height + GameData.shared.playerHeight * distanceBetweenObstacle2)
         bottomWall.currentVelocity = movingUpOrDown
         worldNode.addChild(bottomWall)
         
@@ -228,17 +230,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if wall.currentVelocity > 0 && (wall.position.y >= size.height + wall.size.height/2){
                 // Wall is moving beyond top bounds so change direction
                 wall.currentVelocity = wall.currentVelocity * -1
-            } else if wall.currentVelocity < 0 && (wall.position.y <= wall.size.height / 2 + GameData.shared.playerHeight * 4) {
+            } else if wall.currentVelocity < 0 && (wall.position.y <= wall.size.height / 2 + GameData.shared.playerHeight * distanceBetweenObstacle2) {
                 // Wall is moving beyond bottom bounds so change direction
                 wall.currentVelocity = wall.currentVelocity * -1
             } else {
                 wall.position = wall.position + CGPoint(x: 0, y: wall.currentVelocity)
             }
+            if wall.position.x <= -wall.size.width {
+                obstacle2TopArray.remove(at: obstacle2TopArray.index(of: wall)!)
+                wall.removeFromParent()
+            }
         }
         
         for wall in obstacle2BottomArray {
             wall.position = wall.position - CGPoint(x: findSpeedBasedOnScreenSize(numberOfSeconds: 2), y: 0)
-            if wall.currentVelocity > 0 && (wall.position.y + wall.size.height/2 >= size.height - GameData.shared.playerHeight * 4){
+            if wall.currentVelocity > 0 && (wall.position.y + wall.size.height/2 >= size.height - GameData.shared.playerHeight * distanceBetweenObstacle2){
                 // Wall is moving beyond top bounds so change direction
                 wall.currentVelocity = wall.currentVelocity * -1
             } else if wall.currentVelocity < 0 && (wall.position.y <= -wall.size.height/2) {
@@ -246,6 +252,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 wall.currentVelocity = wall.currentVelocity * -1
             } else {
                 wall.position = wall.position + CGPoint(x: 0, y: wall.currentVelocity)
+            }
+            if wall.position.x <= -wall.size.width {
+                obstacle2BottomArray.remove(at: obstacle2BottomArray.index(of: wall)!)
+                wall.removeFromParent()
             }
         }
     }
