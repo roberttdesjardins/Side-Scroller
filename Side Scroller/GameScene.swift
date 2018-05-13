@@ -24,25 +24,66 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var highScoreBackground: SKSpriteNode! = nil
     private var startLabel: SKLabelNode! = nil
     private var scoreLabel = SKLabelNode(fontNamed: "Avenir")
-    private var counter: Int = 0                     // Used for score
+    private var counter: Int = 0                                      // Used for score keeping
+    
+    // Background
+    let background1 = SKSpriteNode(imageNamed: "glacial_mountains_lightened")
+    let background2 = SKSpriteNode(imageNamed: "glacial_mountains_lightened")
     
     override func sceneDidLoad() {
-        
+        processGameData()
         addChild(worldNode)
         physicsWorld.contactDelegate = self
-        setUpBackground()
-        setUpPlayer()
+        setUpScreen()
+        setupBackground()
         setUpHighScoreTable()
         setUpTouchScreenToStartLabel()
     }
     
-    func setUpBackground() {
+    func processGameData() {
+        GameData.shared.playerHighScore = UserDefaults.standard.getUserHighScores()
+        GameData.shared.totalCredits = UserDefaults.standard.getUserCredits()
+    }
+    
+    func setUpScreen() {
+        
         scene?.scaleMode = SKSceneScaleMode.resizeFill
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         self.physicsBody!.categoryBitMask = PhysicsCategory.Edge
         self.physicsBody?.contactTestBitMask = PhysicsCategory.None
         self.physicsBody?.collisionBitMask = PhysicsCategory.Player
+    }
+    
+    func setupBackground() {
+        background1.anchorPoint = CGPoint(x: 0, y: 0)
+        background1.position = CGPoint(x: 0, y: 0)
+        background1.zPosition = -15
+        background1.size.width = size.width
+        background1.size.height = background1.size.width * 0.5625
+        self.addChild(background1)
+        
+        background2.anchorPoint = CGPoint(x: 0, y: 0)
+        background2.position = CGPoint(x: background1.size.width, y: 0)
+        background2.zPosition = -15
+        background2.size.width = size.width
+        background2.size.height = background2.size.width * 0.5625
+        self.addChild(background2)
+    }
+    
+    func updateBackground() {
+        background1.position = CGPoint(x: background1.position.x - 1, y: background1.position.y)
+        background2.position = CGPoint(x: background2.position.x - 1, y: background2.position.y)
+        
+        if(background1.position.x < 0 - background1.size.width)
+        {
+            background1.position = CGPoint(x: background2.position.x + background2.size.width, y: background2.position.y)
+        }
+        
+        if(background2.position.x < 0 - background2.size.width)
+        {
+            background2.position = CGPoint(x: background1.position.x + background2.size.width, y: background1.position.y)
+        }
     }
     
     func setUpPlayer() {
@@ -81,7 +122,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         startLabel = SKLabelNode(fontNamed: "Avenir")
         startLabel.fontSize = 45
         startLabel.fontColor = SKColor.white
-        startLabel.text = "Touch To Start. Don't let go!"
+        startLabel.text = "Tap to Start"
         startLabel.position = CGPoint(x: size.width/2, y: size.height/2)
         worldNode.addChild(startLabel)
     }
@@ -191,12 +232,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             highScoreTable.removeFromParent()
             highScoreBackground.removeFromParent()
             setUpHud()
+            setUpPlayer()
         }
         
         if startGame {
             counter = counter + 1
             GameData.shared.playerScore = GameData.shared.playerScore + 1
             updateHud()
+            updateBackground()
         }
         
         if touching && startGame {
